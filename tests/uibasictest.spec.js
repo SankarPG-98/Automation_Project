@@ -89,5 +89,5 @@ test.only("child window handles",async({browser}) => {
     const arrayText= text.split("@");
     const domainName =arrayText[1].split(" ")[0];
     console.log(domainName);
-    await username.fill(domainName);
+    await username.fill(domainName);;
 });
