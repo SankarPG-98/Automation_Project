@@ -70,7 +70,7 @@ test("UI validation ", async ({page}) => {
    
 });
 
-test.only("child window handles",async({browser}) => {
+test("child window handles",async({browser}) => {
 
     const context = await browser.newContext();
     const page = await context.newPage();

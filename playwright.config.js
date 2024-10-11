@@ -13,10 +13,16 @@ const config = {
   reporter : 'html',
   
   use: {
-   browserName:'chromium'
+   browserName:'chromium',
+   headless:false,
+   screenshot:'on',
+   trace:'retain-on-failure'
 
-  }
+
+  },
 
   
 };
+
+module.exports=config;
 
