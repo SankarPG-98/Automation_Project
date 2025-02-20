@@ -13,7 +13,7 @@ class CardPage {
 
     async enterDetails(productName,postCode, partialCountry) {
         await this.productList.first().waitFor({ state: 'visible' });
-        const boolean = await this.page.locator(`h3:has-text("IPHONE 13 PRO")`).isVisible();
+        const boolean = await this.page.locator(`h3:has-text("${productName}")`).isVisible();
         expect(boolean).toBeTruthy();
         await this.checkout.click();
         await this.postcode.fill(postCode);
