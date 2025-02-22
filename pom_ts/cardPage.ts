@@ -22,7 +22,7 @@ export class CardPage {
         this.country = page.locator("[placeholder='Select Country']");
     }
 
-    async enterDetails(productName,postCode, partialCountry) {
+    async enterDetails(productName:string,postCode:string, partialCountry:string) {
         await this.productList.first().waitFor({ state: 'visible' });
         const boolean = await this.page.locator(`h3:has-text("${productName}")`).isVisible();
         expect(boolean).toBeTruthy();
@@ -31,7 +31,7 @@ export class CardPage {
         await this.page.locator("[placeholder='Select Country']").type(partialCountry);
     }
 
-    async placeOrder(country, userEmail) {
+    async placeOrder(country:string, userEmail:string) {
         const dropdown = this.page.locator(".ta-results");
         await dropdown.waitFor({ state: 'visible' });
         const optionsCount = await dropdown.locator("button").count();
