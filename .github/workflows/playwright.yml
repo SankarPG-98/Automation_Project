@@ -3,14 +3,14 @@ name: PlayWright_Job
 # Define when the workflow should run
 on:
   schedule:
-    # Schedule for `typeScriptTest` (runs 1:30 pm daily )
-    - cron: '0 8 * * *'
-
+    # Schedule for `typeScriptTest` (runs 1:30 pm daily in IST)
+    - cron: '30 8 * * *'  # UTC time corresponding to 1:30 PM IST (8:00 AM UTC)
+  
     # Schedule for `regression` tests (runs every Monday at 10 AM UTC)
-    - cron: '0 4 * * 1'
-
+    - cron: '0 4 * * 1'  # Monday at 10 AM UTC
+  
     # Schedule for `allure-report` (runs every Friday at 5 PM UTC)
-    - cron: '30 11 * * 5'
+    - cron: '30 11 * * 5'  # Friday at 5 PM UTC
   
   # Manually trigger the workflow with workflow_dispatch, allowing user input
   workflow_dispatch:
@@ -18,7 +18,7 @@ on:
       test_type:
         description: 'Choose which test to run'
         required: true
-        default: 'allure-report'
+        default: 'typeScriptTest'
         options:
           - allure-report
           - regression
@@ -28,93 +28,86 @@ on:
 jobs:
   run-typeScriptTest:
     runs-on: ubuntu-latest  # Use Ubuntu as the runner
-    
-    # Only run typeScriptTest at midnight UTC
-    if: ${{ github.event_name == 'schedule' && github.event.schedule == '0 4 * * 1' }}
+    if: ${{ github.event_name == 'schedule' && github.event.schedule == '30 8 * * *' }}  # Run only at 1:30 PM IST (8:00 AM UTC)
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Run typeScriptTest
-      run: npm run typeScriptTest
+      - name: Run typeScriptTest
+        run: npm run typeScriptTest
 
   run-regression:
     runs-on: ubuntu-latest  # Use Ubuntu as the runner
-    
-    # Only run regression tests on Monday at 10 AM UTC
-    if: ${{ github.event_name == 'schedule' && github.event.schedule == '0 8 * * *' }}
+    if: ${{ github.event_name == 'schedule' && github.event.schedule == '0 4 * * 1' }}  # Run only on Monday at 10 AM UTC
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Run regression tests
-      run: npm run regression
+      - name: Run regression tests
+        run: npm run regression
 
   run-allure-report:
     runs-on: ubuntu-latest  # Use Ubuntu as the runner
-    
-    # Only run allure-report tests on Friday at 5 PM UTC
-    if: ${{ github.event_name == 'schedule' && github.event.schedule == '30 11 * * 5' }}
+    if: ${{ github.event_name == 'schedule' && github.event.schedule == '30 11 * * 5' }}  # Run only on Friday at 5 PM UTC
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Run allure-report tests
-      run: npm run allure-report
+      - name: Run allure-report tests
+        run: npm run allure-report
 
   # Manually run selected test based on user input
   manual-test:
     runs-on: ubuntu-latest  # Use Ubuntu as the runner
-    
     if: ${{ github.event_name == 'workflow_dispatch' }}
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Run selected test (Manual)
-      run: |
-        if [[ "${{ github.event.inputs.test_type }}" == "allure-report" ]]; then
-          npm run allure-report
-        elif [[ "${{ github.event.inputs.test_type }}" == "regression" ]]; then
-          npm run regression
-        elif [[ "${{ github.event.inputs.test_type }}" == "webTests" ]]; then
-          npm run webTests
-        elif [[ "${{ github.event.inputs.test_type }}" == "typeScriptTest" ]]; then
-          npm run typeScriptTest
-        fi
+      - name: Run selected test (Manual)
+        run: |
+          if [[ "${{ github.event.inputs.test_type }}" == "allure-report" ]]; then
+            npm run allure-report
+          elif [[ "${{ github.event.inputs.test_type }}" == "regression" ]]; then
+            npm run regression
+          elif [[ "${{ github.event.inputs.test_type }}" == "webTests" ]]; then
+            npm run webTests
+          elif [[ "${{ github.event.inputs.test_type }}" == "typeScriptTest" ]]; then
+            npm run typeScriptTest
+          fi
