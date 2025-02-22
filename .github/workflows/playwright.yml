@@ -3,9 +3,13 @@ name: PlayWright_Job
 # Define when the workflow should run
 on:
   schedule:
-    - cron: '30 8 * * *'  # Run at 1:30 PM IST (8:00 AM UTC)
-    - cron: '0 4 * * 1'  # Run at Monday 10 AM UTC
-    - cron: '30 11 * * 5'  # Run at Friday 5 PM UTC
+    # Run at 1:30 PM IST (8:00 AM UTC)
+    - cron: '30 8 * * *'  
+    # Run at Monday 10 AM UTC
+    - cron: '0 4 * * 1'
+    # Run at Friday 5 PM UTC
+    - cron: '30 11 * * 5'
+  
   workflow_dispatch:
     inputs:
       test_type:
@@ -22,6 +26,9 @@ jobs:
   run-typeScriptTest:
     runs-on: ubuntu-latest
 
+    # Only run when 'test_type' is 'typeScriptTest'
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.test_type == 'typeScriptTest' }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -34,16 +41,18 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Add step to install Playwright browsers
+      # Install Playwright Browsers
       - name: Install Playwright Browsers
         run: npx playwright install
 
       - name: Run typeScriptTest
         run: npm run typeScriptTest
-        if: ${{ github.event.inputs.test_type == 'typeScriptTest' }}
 
   run-regression:
     runs-on: ubuntu-latest
+
+    # Only run when 'test_type' is 'regression'
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.test_type == 'regression' }}
 
     steps:
       - name: Checkout code
@@ -57,16 +66,18 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Add step to install Playwright browsers
+      # Install Playwright Browsers
       - name: Install Playwright Browsers
         run: npx playwright install
 
       - name: Run regression tests
         run: npm run regression
-        if: ${{ github.event.inputs.test_type == 'regression' }}
 
   run-allure-report:
     runs-on: ubuntu-latest
+
+    # Only run when 'test_type' is 'allure-report'
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.test_type == 'allure-report' }}
 
     steps:
       - name: Checkout code
@@ -80,16 +91,18 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Add step to install Playwright browsers
+      # Install Playwright Browsers
       - name: Install Playwright Browsers
         run: npx playwright install
 
       - name: Run allure-report tests
         run: npm run allure-report
-        if: ${{ github.event.inputs.test_type == 'allure-report' }}
 
-  manual-test:
+  run-webTests:
     runs-on: ubuntu-latest
+
+    # Only run when 'test_type' is 'webTests'
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.test_type == 'webTests' }}
 
     steps:
       - name: Checkout code
@@ -103,7 +116,33 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Add step to install Playwright browsers
+      # Install Playwright Browsers
+      - name: Install Playwright Browsers
+        run: npx playwright install
+
+      - name: Run webTests
+        run: npm run webTests
+
+  # Manual test job to allow user input selection
+  manual-test:
+    runs-on: ubuntu-latest
+
+    # Run this job only if triggered manually via `workflow_dispatch`
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      # Install Playwright Browsers
       - name: Install Playwright Browsers
         run: npx playwright install
 
