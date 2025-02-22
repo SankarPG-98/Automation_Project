@@ -10,11 +10,14 @@ const config = {
     timeout : 5000,
   },
 
-  reporter : 'html',
+  reporter: [
+    ['line'],
+    ['allure-playwright'],  // Enable allure reporter here
+  ],
   
   use: {
    browserName:'chromium',
-   headless:false,
+   headless:true,
    screenshot:'on',
    trace:'retain-on-failure'
 

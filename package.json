@@ -2,17 +2,21 @@
   "name": "playwrightautomation",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "regression":"npx playwright test",
+    "webTests":"npx playwright test --grep @web",
+    "allure-report":"npx playwright test --grep @web --reporter=line,allure-playwright"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
     "@playwright/test": "^1.47.2",
-    "@types/node": "^22.7.4"
+    "@types/node": "^22.7.4",
+    "allure-playwright": "^3.2.0"
   },
-  "dependencies":{
-    "exceljs":"^4.4.0"
-
+  "dependencies": {
+    "exceljs": "^4.4.0"
   }
 }

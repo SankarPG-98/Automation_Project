@@ -4,6 +4,8 @@ const {customTest } = require('../Utils/orderPlace');
 //conver json to string then to object
 const testData = JSON.parse(JSON.stringify(require("../Utils/placeOrder.json")));
 
+//test.describe.configure({mode:'parallel'});
+test.describe.configure({mode:'serial'});
 for(const data of testData){
 test(`EndToEnd test for data ${data.productName}`, async ({ browser }) => {
     const context = await browser.newContext();
@@ -20,7 +22,7 @@ test(`EndToEnd test for data ${data.productName}`, async ({ browser }) => {
 
 });}
 
-customTest("EndToEnd ", async ({ browser ,testDataOrder}) => {
+customTest(`@Web  EndToEnd `, async ({ browser ,testDataOrder}) => {
     const context = await browser.newContext();
     const page = await context.newPage();
     

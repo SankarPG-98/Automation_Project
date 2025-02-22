@@ -6,6 +6,7 @@ const config = {
 
   testDir: './tests',
   retries:1,
+  workers:3,
   timeout : 30*1000,
   except :{
     timeout : 5000,
@@ -18,7 +19,7 @@ const config = {
       name :'chrome',
       use: {
         browserName:'chromium',
-        headless:false,
+        headless:true,
         screenshot:'on',
         video:'retain-on-failure',
         //ignoreHttpsError:true,
@@ -30,7 +31,7 @@ const config = {
        name :'safari',
         use: {
         browserName:'webkit',
-        headless:false,
+        headless:true,
         screenshot:'on',
         //...devices['iPhone 12 Mini landscape'],
         trace:'retain-on-failure'  
