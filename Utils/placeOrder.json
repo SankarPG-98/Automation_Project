@@ -1,0 +1,22 @@
+[  {
+
+    "url"           : "https://rahulshettyacademy.com/client",
+    "emailId"       : "sankarpg@gmail.com",
+    "password"      : "102030@sS",
+    "productName"   : "IPHONE 13 PRO",
+    "country"       : " India",
+    "postCode"      : "4444 6667 8899"
+    },
+
+    {
+
+        "url"           : "https://rahulshettyacademy.com/client",
+        "emailId"       : "sankarpg@gmail.com",
+        "password"      : "102030@sS",
+        "productName"   : "ADIDAS ORIGINAL",
+        "country"       : " India",
+        "postCode"      : "4444 6667 8899"
+    }
+
+
+]

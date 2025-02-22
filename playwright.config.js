@@ -10,13 +10,22 @@ const config = {
     timeout : 5000,
   },
 
-  reporter : 'html',
+  reporter: [
+    ['line'],
+    ['allure-playwright'],  // Enable allure reporter here
+  ],
   
   use: {
-   browserName:'chromium'
+   browserName:'chromium',
+   headless:true,
+   screenshot:'on',
+   trace:'retain-on-failure'
 
-  }
+
+  },
 
   
 };
+
+module.exports=config;
 
